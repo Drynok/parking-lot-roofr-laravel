@@ -1,4 +1,4 @@
-.PHONY: up down build start stop restart logs ps
+.PHONY: up down build start stop restart logs ps migrate composer
 
 up:
 	docker compose up -d
@@ -26,3 +26,9 @@ ps:
 
 test:
 	docker compose exec parking php artisan test
+
+migrate:
+	docker-compose exec parking php artisan migrate
+
+composer:
+	docker-compose exec parking composer install -o

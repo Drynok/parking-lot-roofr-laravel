@@ -1,11 +1,14 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParkingSpotsTable extends Migration
-{
-    public function up()
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
@@ -16,14 +19,16 @@ class CreateParkingSpotsTable extends Migration
 
             $table->index('parking_spot_id');
         });
-
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('vehicles', function (Blueprint $table) {
             $table->dropIndex('vehicles_parking_spot_id_index');
         });
         Schema::dropIfExists('vehicles');
     }
-}
+};
