@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use \Cache;
+use App\Models\ParkingLot;
 
 class ParkingLotController extends Controller
 {
