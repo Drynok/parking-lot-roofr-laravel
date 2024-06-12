@@ -16,8 +16,6 @@ return new class extends Migration {
             $table->boolean('occupied')->default(false);
             $table->foreignId('parking_lot_id')->constrained();
             $table->timestamps();
-            // $table->foreign('parking_lot_id')->references('id')->on('parking_lots')->index();
-
             $table->index('type');
             $table->index(['parking_lot_id', 'type']);
         });

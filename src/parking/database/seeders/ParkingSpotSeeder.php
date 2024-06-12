@@ -13,15 +13,9 @@ class ParkingSpotSeeder extends Seeder
         $parkingLots = ParkingLot::all();
 
         foreach ($parkingLots as $parkingLot) {
-            for ($i = 1; $i <= $parkingLot->capacity - 20; $i++) {
+            for ($i = 1; $i <= $parkingLot->capacity; $i++) {
                 ParkingSpot::create([
-                    'occupied' => false,
-                    'parking_lot_id' => $parkingLot->id,
-                ]);
-            }
-            for ($i = 1; $i <= 20; $i++) {
-                ParkingSpot::create([
-                    'occupied' => true,
+                    'type' => $i % 4 == 0 ? 'motorcycle' : 'car',
                     'parking_lot_id' => $parkingLot->id,
                 ]);
             }

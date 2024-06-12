@@ -10,21 +10,21 @@ class ParkingLotSeeder extends Seeder
     public function run()
     {
         ParkingLot::create([
-            'name' => 'Random Street Parking',
-            'address' => '10 Random St',
+            'name' => 'Main Street Parking',
+            'address' => '123 Main St',
             'city' => 'Anytown',
             'state' => 'FL',
             'zip' => '12345',
-            'capacity' => 50,
+            'capacity' => 100,
         ]);
 
         ParkingLot::create([
-            'name' => 'Downtown Parking',
-            'address' => '123 Helm St',
+            'name' => 'Downtown Parking Garage',
+            'address' => '456 Elm St',
             'city' => 'Anytown',
             'state' => 'FL',
             'zip' => '12345',
-            'capacity' => 200,
+            'capacity' => 500,
         ]);
     }
 }

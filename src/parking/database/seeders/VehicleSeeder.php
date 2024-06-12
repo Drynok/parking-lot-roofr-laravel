@@ -10,12 +10,13 @@ class VehicleSeeder extends Seeder
 {
     public function run()
     {
-        $parkingSpots = ParkingSpot::where('occupied', false)->take(10)->get();
+        $parkingSpots = ParkingSpot::inRandomOrder()->limit(50)->get();
 
         foreach ($parkingSpots as $parkingSpot) {
             Vehicle::create([
-                'type' => 'Car',
+                'type' => $parkingSpot->type,
                 'parking_spot_id' => $parkingSpot->id,
+                'plate_number' => fake()->regexify('[A-Z]{3}-[0-9]{3}'),
             ]);
 
             $parkingSpot->occupied = true;
