@@ -32,3 +32,6 @@ migrate:
 
 composer:
 	docker-compose exec parking composer install -o
+
+seed:
+	docker-compose exec parking php artisan db:seed
