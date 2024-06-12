@@ -1,0 +1,41 @@
+services:
+  parking:
+    container_name: parking
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    volumes:
+      - ./src/parking:/var/www/html
+
+  db:
+    container_name: db
+    image: "kartoza/postgis:${POSTGRES_VERSION:-14}"
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5430:5432"
+    environment:
+      - POSTGRES_DB=parking
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - "parkingdb:/var/lib/postgresql/${POSTGRES_VERSION:-14}"
+
+  cache:
+    container_name: cache
+    image: "redis:alpine"
+    command: redis-server
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "6378:6379"
+
+volumes:
+  parkingdb:
