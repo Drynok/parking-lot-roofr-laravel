@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use \Cache;
+
 class ParkingLotController extends Controller
 {
     /**

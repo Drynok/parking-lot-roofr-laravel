@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use \Cache;
+
 class ParkingSpotController extends Controller
 {
     public function park(Request $request, $id)
