@@ -16,8 +16,7 @@ return new class extends Migration {
             $table->boolean('occupied')->default(false);
             $table->foreignId('parking_lot_id')->constrained();
             $table->timestamps();
-            $table->index('type');
-            $table->index(['parking_lot_id', 'type']);
+            $table->index('parking_lot_id');
         });
     }
 
@@ -27,8 +26,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('parking_spots', function (Blueprint $table) {
-            $table->dropIndex('parking_spots_type_index');
-            $table->dropIndex('parking_spots_parking_lot_id_type_index');
+            $table->dropIndex('parking_spots_parking_lot_id_index');
         });
         Schema::dropIfExists('parking_spots');
     }

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use \Cache;
 use App\Models\ParkingLot;
+use \Validator;
 
 class ParkingLotController extends Controller
 {

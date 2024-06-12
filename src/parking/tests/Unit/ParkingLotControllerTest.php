@@ -25,8 +25,6 @@ class ParkingLotControllerTest extends TestCase
                 'state',
                 'zip',
                 'capacity',
-                'created_at',
-                'updated_at'
             ]
         ]);
     }

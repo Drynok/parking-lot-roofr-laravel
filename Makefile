@@ -30,6 +30,9 @@ test:
 migrate:
 	docker-compose exec parking php artisan migrate
 
+migrate-down:
+	docker-compose exec parking php artisan migrate:rollback
+
 composer:
 	docker-compose exec parking composer install -o
 
