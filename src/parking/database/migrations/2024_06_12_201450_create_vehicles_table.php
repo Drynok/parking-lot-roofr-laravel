@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('type');
             $table->foreignId('parking_spot_id')->constrained();
+            $table->string('plate_number');
             $table->timestamps();
             // $table->foreign('parking_spot_id')->references('id')->on('parking_spots')->index();
 
