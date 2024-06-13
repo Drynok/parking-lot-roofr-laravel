@@ -9,8 +9,10 @@ class ParkingLotController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/parking-lots",
-     *     summary="Get all parking lots",
+     *     path="/parking-lots",
+     *     summary="List parking lots",
+     *     description="Retrieve a list of all parking lots with their associated parking spots",
+     *     operationId="listParkingLots",
      *     tags={"Parking Lots"},
      *     @OA\Response(
      *         response=200,
@@ -32,16 +34,35 @@ class ParkingLotController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/parking-lots/",
-     *     summary="Show a parking lot",
+     *     path="/parking-lots/{id}",
+     *     summary="Get parking lot details",
+     *     description="Retrieve the details of a specific parking lot, including its associated parking spots",
+     *     operationId="showParkingLot",
      *     tags={"Parking Lots"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the parking lot",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ParkingLot")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid parking lot ID",
      *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/ParkingLot")
+     *             @OA\Property(property="message", type="string", example="Invalid parking lot ID")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Parking lot not found"
      *     )
      * )
      */
@@ -62,7 +83,43 @@ class ParkingLotController extends Controller
         return response()->json($parkingLot);
     }
 
-
+    /**
+     * @OA\Get(
+     *     path="/parking-lots/{id}/availability",
+     *     summary="Get parking lot availability",
+     *     description="Retrieve the total spots and available spots for a specific parking lot",
+     *     operationId="getAvailability",
+     *     tags={"Parking Lots"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the parking lot",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="total_spots", type="integer"),
+     *             @OA\Property(property="available_spots", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid parking lot ID",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invalid parking lot ID")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Parking lot not found"
+     *     )
+     * )
+     */
     public function getAvailability($id)
     {
         // Validate the parking lot ID
@@ -86,4 +143,3 @@ class ParkingLotController extends Controller
         return response()->json($availability);
     }
 }
-
