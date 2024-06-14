@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->foreignId('parking_spot_id')->constrained();
-            $table->string('plate_number');
-            $table->timestamps();
-            $table->index('parking_spot_id');
+            $table->string('name');
+            $table->integer('space_occupied');
+            $table->integer('plate_number'); // int for simplicity
+            $table
+                ->timestamps()->nullable();
         });
     }
 
@@ -25,9 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('vehicles', function (Blueprint $table) {
-            $table->dropIndex('vehicles_parking_spot_id_index');
-        });
         Schema::dropIfExists('vehicles');
     }
 };

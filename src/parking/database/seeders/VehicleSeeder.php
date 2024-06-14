@@ -10,17 +10,22 @@ class VehicleSeeder extends Seeder
 {
     public function run()
     {
-        $parkingSpots = ParkingSpot::inRandomOrder()->limit(50)->get();
+        $vehicle = Vehicle::create([
+            'name' => "Motorcycle",
+            'space_occupied' => 1,
+        ]);
+        $vehicle->save();
 
-        foreach ($parkingSpots as $parkingSpot) {
-            Vehicle::create([
-                'type' => $parkingSpot->type,
-                'parking_spot_id' => $parkingSpot->id,
-                'plate_number' => fake()->regexify('[A-Z]{3}-[0-9]{3}'),
-            ]);
+        $vehicle = Vehicle::create([
+            'name' => "Car",
+            'space_occupied' => 1,
+        ]);
+        $vehicle->save();
 
-            $parkingSpot->occupied = true;
-            $parkingSpot->save();
-        }
+        $vehicle = Vehicle::create([
+            'name' => "Van",
+            'space_occupied' => 3,
+        ]);
+        $vehicle->save();
     }
 }

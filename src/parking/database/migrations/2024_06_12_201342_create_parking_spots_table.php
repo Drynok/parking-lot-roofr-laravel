@@ -12,11 +12,12 @@ return new class extends Migration {
     {
         Schema::create('parking_spots', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
             $table->boolean('occupied')->default(false);
             $table->foreignId('parking_lot_id')->constrained();
-            $table->timestamps();
+            $table->foreignId('vehicle_id')->nullable()->constrained();
             $table->index('parking_lot_id');
+            $table
+                ->timestamps()->nullable();
         });
     }
 

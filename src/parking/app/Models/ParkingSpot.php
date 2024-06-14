@@ -11,12 +11,13 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="occupied", type="string", example="true"),
  *     @OA\Property(property="parking_lot_id", type="integer", example="10"),
+ *     @OA\Property(property="vehicle_id", type="integer", example="10"),
  * )
  */
 class ParkingSpot extends Model
 {
-    protected $fillable = ['type', 'occupied', 'parking_lot_id'];
-
+    protected $fillable = ['type', 'occupied', 'parking_lot_id', 'vehicle_id'];
+    public $timestamps = false;
     public function parkingLot()
     {
         return $this->belongsTo(ParkingLot::class);
