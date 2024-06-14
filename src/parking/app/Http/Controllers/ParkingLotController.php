@@ -9,7 +9,7 @@ class ParkingLotController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/parking-lots",
+     *     path="/api/parking-lots",
      *     summary="List parking lots",
      *     description="Retrieve a list of all parking lots with their associated parking spots",
      *     operationId="listParkingLots",
@@ -34,7 +34,7 @@ class ParkingLotController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/parking-lots/{id}",
+     *     path="/api/parking-lots/{id}",
      *     summary="Get parking lot details",
      *     description="Retrieve the details of a specific parking lot, including its associated parking spots",
      *     operationId="showParkingLot",
@@ -85,7 +85,7 @@ class ParkingLotController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/parking-lots/{id}/availability",
+     *     path="/api/parking-lots/{id}/availability",
      *     summary="Get parking lot availability",
      *     description="Retrieve the total spots and available spots for a specific parking lot",
      *     operationId="getAvailability",

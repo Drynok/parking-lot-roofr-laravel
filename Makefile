@@ -38,3 +38,7 @@ composer:
 
 seed:
 	docker-compose exec parking php artisan db:seed
+
+swagger:
+	# docker-compose exec parking php artisan l5-swagger:generate
+	docker-compose exec parking ./vendor/bin/openapi --format json --output ./public/swagger.json ./app
