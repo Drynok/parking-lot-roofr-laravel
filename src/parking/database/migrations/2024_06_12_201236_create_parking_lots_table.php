@@ -15,8 +15,6 @@ return new class extends Migration {
             $table->string('state');
             $table->string('zip');
             $table->integer('capacity');
-            $table
-                ->timestamps()->nullable();
         });
     }
     /**

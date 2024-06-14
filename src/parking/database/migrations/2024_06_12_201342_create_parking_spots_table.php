@@ -15,9 +15,8 @@ return new class extends Migration {
             $table->boolean('occupied')->default(false);
             $table->foreignId('parking_lot_id')->constrained();
             $table->foreignId('vehicle_id')->nullable()->constrained();
+            $table->integer('plate_number')->nullable(); // int for simplicity
             $table->index('parking_lot_id');
-            $table
-                ->timestamps()->nullable();
         });
     }
 

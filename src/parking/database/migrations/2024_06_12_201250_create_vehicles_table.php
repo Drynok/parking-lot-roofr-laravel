@@ -14,9 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->integer('space_occupied');
-            $table->integer('plate_number'); // int for simplicity
-            $table
-                ->timestamps()->nullable();
         });
     }
 

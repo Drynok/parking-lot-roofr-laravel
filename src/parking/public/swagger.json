@@ -241,6 +241,15 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "parking_lot_id",
+                        "in": "query",
+                        "description": "ID of the parking lot",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -361,6 +370,10 @@
                     "parking_lot_id": {
                         "type": "integer",
                         "example": "10"
+                    },
+                    "vehicle_id": {
+                        "type": "integer",
+                        "example": "10"
                     }
                 },
                 "type": "object"
@@ -376,17 +389,13 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "type": {
+                    "name": {
                         "type": "string",
-                        "example": "Car"
+                        "example": "Van"
                     },
-                    "parking_spot_id": {
+                    "space_occupied": {
                         "type": "integer",
-                        "example": "10"
-                    },
-                    "plate_number": {
-                        "type": "string",
-                        "example": "10"
+                        "example": "1"
                     }
                 },
                 "type": "object"

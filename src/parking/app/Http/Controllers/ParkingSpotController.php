@@ -86,30 +86,31 @@ class ParkingSpotController extends Controller
             return response()->json(['message' => 'Invalid parking spot ID'], 400);
         }
 
-        $spot = ParkingSpot::findOrFail($id)->where('parking_lot_id', $request->parking_lot_id)->first();
+        $spot = ParkingSpot::where('id', $id)
+            ->where('parking_lot_id', $request->parking_lot_id)
+            ->first();
 
         if ($spot->occupied) {
             return response()->json(['message' => 'This spot is occupied'], 404);
         }
 
         $vehicle = Vehicle::where('name', $request->vehicle_type)->firstOrFail();
+        $plate = rand(100000, 999999);
 
         if ($vehicle->space_occupied > 1) {
             // If Van - check if next 2 spots are free.
             $next_spots = ParkingSpot::whereBetween('id', [$id + 1, $id + 2])
                 ->where('occupied', false)
-                ->get();
+                ->first();
 
-            if ($next_spots->isEmpty()) {
+            if (!$next_spots) {
                 return response()->json(['message' => 'Not enough space to park here']);
             }
-
-            $plate = rand(100000, 999999);
 
             foreach ($next_spots as $next_spot) {
                 $next_spot->occupied = true;
                 $next_spot->vehicle_id = $vehicle->id;
-                $next_spot->car_plate_number = $plate;
+                $next_spot->plate_number = $plate;
                 $next_spot->save();
             }
 
@@ -117,7 +118,7 @@ class ParkingSpotController extends Controller
         }
 
         $spot->occupied = true;
-        $spot->car_plate_number = rand(100000, 999999); // Generate a random number.
+        $spot->plate_number = $plate; // Generate a random number.
         $spot->vehicle_id = $vehicle->id;
         $spot->save();
 
@@ -135,6 +136,15 @@ class ParkingSpotController extends Controller
      *         name="id",
      *         in="path",
      *         description="ID of the parking spot",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="parking_lot_id",
+     *         in="query",
+     *         description="ID of the parking lot",
      *         required=true,
      *         @OA\Schema(
      *             type="integer"
@@ -189,8 +199,9 @@ class ParkingSpotController extends Controller
             return response()->json(['message' => 'Invalid parking spot ID'], 400);
         }
 
-        $spot = ParkingSpot::findOrFail($id)
-            ->where('parking_lot_id', $request->parking_lot_id);
+        $spot = ParkingSpot::where('id', $id)
+            ->where('parking_lot_id', $request->parking_lot_id)
+            ->first();
 
         if (!$spot->occupied) {
             return response()->json(['message' => 'Spot is already free'], 400);
@@ -205,10 +216,11 @@ class ParkingSpotController extends Controller
         if ($other_spots->isNotEmpty()) {
             foreach ($other_spots as $other_spot) {
                 $other_spot->occupied = false;
+                $other_spot->vehicle_id = null;
+                $other_spot->plate_number = null;
                 $other_spot->save();
             }
         }
-
 
         Cache::forget('parking_lot_' . $spot->parking_lot_id);
         Cache::forget('parking_lots');
