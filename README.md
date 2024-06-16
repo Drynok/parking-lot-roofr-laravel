@@ -26,3 +26,11 @@ Swagger documentation is available here: http://localhost:8081/api/documentation
 ### Car park test:
 
 ![alt text](image-5.png)
+
+![alt text](image-6.png)
+
+![alt text](image-7.png)
+
+![alt text](image-8.png)
+
+![alt text](image-9.png)
