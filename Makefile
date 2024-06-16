@@ -42,3 +42,6 @@ seed:
 swagger:
 	docker-compose exec parking php artisan l5-swagger:generate
 	# docker-compose exec parking ./vendor/bin/openapi --format json --output ./public/swagger.json ./app
+
+cache-clear:
+ 	docker-compose exec parking php artisan optimize:clear

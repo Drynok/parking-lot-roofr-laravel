@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignId('parking_lot_id')->constrained();
             $table->foreignId('vehicle_id')->nullable()->constrained();
             $table->integer('plate_number')->nullable(); // int for simplicity
-            $table->index('parking_lot_id');
+            // $table->index('parking_lot_id');
         });
     }
 
@@ -25,9 +25,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('parking_spots', function (Blueprint $table) {
-            $table->dropIndex('parking_spots_parking_lot_id_index');
-        });
+        // Schema::table('parking_spots', function (Blueprint $table) {
+        //     $table->dropIndex('parking_spots_parking_lot_id_index');
+        // });
         Schema::dropIfExists('parking_spots');
     }
 };

@@ -13,6 +13,7 @@ class ParkingSpotController extends Controller
      * @OA\Post(
      *     path="/api/parking-spots/{id}/park",
      *     summary="Park a vehicle in a parking spot",
+     *     tags={"Parking Spots"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -90,6 +91,10 @@ class ParkingSpotController extends Controller
             ->where('parking_lot_id', $request->parking_lot_id)
             ->first();
 
+        if (!$spot) {
+            return response()->json(['message' => 'Parking spot not found'], 404);
+        }
+
         if ($spot->occupied) {
             return response()->json(['message' => 'This spot is occupied'], 404);
         }
@@ -99,22 +104,24 @@ class ParkingSpotController extends Controller
 
         if ($vehicle->space_occupied > 1) {
             // If Van - check if next 2 spots are free.
-            $next_spots = ParkingSpot::whereBetween('id', [$id + 1, $id + 2])
+            $currentSpotId = $spot->id;
+            $spots_around = ParkingSpot::where(function ($query) use ($currentSpotId) {
+                $query->where('id', $currentSpotId - 1)
+                    ->orWhere('id', $currentSpotId + 1);
+            })
                 ->where('occupied', false)
-                ->first();
+                ->get();
 
-            if (!$next_spots) {
+            if (!$spots_around) {
                 return response()->json(['message' => 'Not enough space to park here']);
             }
 
-            foreach ($next_spots as $next_spot) {
+            foreach ($spots_around as $next_spot) {
                 $next_spot->occupied = true;
                 $next_spot->vehicle_id = $vehicle->id;
                 $next_spot->plate_number = $plate;
                 $next_spot->save();
             }
-
-            return response()->json(['message' => 'Vehicle parked successfully']);
         }
 
         $spot->occupied = true;
@@ -123,6 +130,7 @@ class ParkingSpotController extends Controller
         $spot->save();
 
         Cache::forget('parking_lot_' . $spot->parking_lot_id);
+        Cache::forget('parking_lot_' . $spot->parking_lot_id . '_availability');
         Cache::forget('parking_lots');
 
         return response()->json(['message' => 'Vehicle parked successfully']);
@@ -132,6 +140,7 @@ class ParkingSpotController extends Controller
      * @OA\Post(
      *     path="/api/parking-spots/{id}/unpark",
      *     summary="Unpark a vehicle from a parking spot",
+     *     tags={"Parking Spots"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -203,17 +212,18 @@ class ParkingSpotController extends Controller
             ->where('parking_lot_id', $request->parking_lot_id)
             ->first();
 
+        if (!$spot) {
+            return response()->json(['message' => 'Parking spot not found'], 404);
+        }
+
         if (!$spot->occupied) {
             return response()->json(['message' => 'Spot is already free'], 400);
         }
 
-        $spot->occupied = false;
-        $spot->save();
-
         // Free other spots.
-        $other_spots = ParkingSpot::where('plate_number', $spot->plate_number)->all();
+        $other_spots = ParkingSpot::where('plate_number', $spot->plate_number)->get();
 
-        if ($other_spots->isNotEmpty()) {
+        if ($other_spots) {
             foreach ($other_spots as $other_spot) {
                 $other_spot->occupied = false;
                 $other_spot->vehicle_id = null;
@@ -222,7 +232,13 @@ class ParkingSpotController extends Controller
             }
         }
 
+        $spot->vehicle_id = null;
+        $spot->plate_number = null;
+        $spot->occupied = false;
+        $spot->save();
+
         Cache::forget('parking_lot_' . $spot->parking_lot_id);
+        Cache::forget('parking_lot_' . $spot->parking_lot_id . '_availability');
         Cache::forget('parking_lots');
 
         return response()->json(['message' => 'Vehicle unparked successfully']);

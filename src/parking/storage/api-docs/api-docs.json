@@ -145,6 +145,9 @@
         },
         "/api/parking-spots/{id}/park": {
             "post": {
+                "tags": [
+                    "Parking Spots"
+                ],
                 "summary": "Park a vehicle in a parking spot",
                 "operationId": "2fa13683ea963121a56db008399ceda1",
                 "parameters": [
@@ -230,6 +233,9 @@
         },
         "/api/parking-spots/{id}/unpark": {
             "post": {
+                "tags": [
+                    "Parking Spots"
+                ],
                 "summary": "Unpark a vehicle from a parking spot",
                 "operationId": "c7bd9facc3a4a1cd0f28aae5728c566b",
                 "parameters": [
