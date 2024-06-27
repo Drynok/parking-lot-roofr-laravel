@@ -9,6 +9,15 @@ use App\Models\Vehicle;
 
 class ParkingSpotController extends Controller
 {
+
+    private $parkingSpotRepository;
+    private $parkingService;
+
+    public function __construct(ParkingSpotRepositoryInterface $parkingSpotRepository, ParkingService $parkingService)
+    {
+        $this->parkingSpotRepository = $parkingSpotRepository;
+        $this->parkingService = $parkingService;
+    }
     /**
      * @OA\Post(
      *     path="/api/parking-spots/{id}/park",
@@ -78,6 +87,20 @@ class ParkingSpotController extends Controller
      */
     public function park(Request $request, $id)
     {
+
+        $result = $this->parkingService->parkVehicle($id, $request->validated());
+
+        if (!$result['success']) {
+            return response()->json(['message' => $result['message']], $result['status']);
+        }
+
+        return response()->json(['message' => 'Vehicle parked successfully']);
+
+        $result = $this->parkingService->parkVehicle($id, $request->validated());
+
+        if (!$result['success']) {
+            return response()->json(['message' => $result['message']], $result['status']);
+        }
         // Validate the parking spot ID
         $validatedData = Validator::make(['id' => $id], [
             'id' => 'required|integer|exists:parking_spots,id',
@@ -199,6 +222,15 @@ class ParkingSpotController extends Controller
      */
     public function unpark(Request $request, $id)
     {
+
+        $result = $this->parkingService->unparkVehicle($id, $request->validated());
+
+        if (!$result['success']) {
+            return response()->json(['message' => $result['message']], $result['status']);
+        }
+
+        return response()->json(['message' => 'Vehicle unparked successfully']);
+
         // Validate the parking spot ID
         $validatedData = Validator::make(['id' => $id], [
             'id' => 'required|integer|exists:parking_spots,id',
